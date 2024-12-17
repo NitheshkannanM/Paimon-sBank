@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Website Design</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="page-title">Welcome to Paimon's Bank</h1>
+            <h6 style="font-family: cursive;">.....When wealth comes Knockin'.....</h6>
+            <nav>
+                <ul class="tabs">
+                    <li><a href="#posters" class="tab-link">Home</a></li>
+                    <li><a href="#login" class="tab-link">Login</a></li>
+                    <li><a href="#signup" class="tab-link">Signup</a></li>
+                    <li><a href="#admin_login" class="tab-link">Admin Login</a></li>
+                    <li><a href="#about" class="tab-link">About Us</a></li>
+                    <li><a href="#contact" class="tab-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!--posters-->
+        <section id="posters" class="content active">
+            <div class="posters">
+                <div class="poster"><img src="{% static 'images/add12.jpg' %}" alt="poster6"></div>
+                <div class="poster"><img src="{% static 'images/add11.jpg' %}" alt="poster5"></div>
+                <div class="poster"><img src="{% static 'images/add7.jpg' %}" alt="poster4"></div>
+            </div>
+        </section>
+            <!--User login-->
+        <section id="login" class="content">
+            <form class="login-form" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <h2>Login</h2>
+                <label for="user_id">UserID:</label>
+                <input type="text" id="user_id" name="user_id" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+                
+        <!--signup-->
+        <section id="signup" class="content">
+            <form class="signup-form" action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+                <h2>Signup</h2>
+                <label for="user_id">UserID:</label>
+                <input type="text" id="user_id" name="user_id" required>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="phone_no">Phone_no:</label>
+                <input type="number" id="phone_no" name="phone_no" required>
+                <label for="email">Email-ID:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <label for="re_password">Re-enter Password:</label>
+                <input type="password" id="re_password" name="re_password" required>
+                <button type="submit">Signup</button>
+            </form>
+        </section>
+        <!--admin login-->
+        <section id="admin_login" class="content">
+            <form class="admin_login-form" action="{% url 'admin_login' %}" method="post">
+                <h2>Admin Login</h2>
+                {% csrf_token %}
+                <label for="admin_id">UserID:</label>
+                <input type="text" id="admin_id" name="admin_id" required>
+                <label for="admin_password">Password:</label>
+                <input type="password" id="admin_password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <!--about-->
+        <section id="about" class="content">
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero et ultricies volutpat.</p>
+        </section>
+        <!--contact-->
+        <section id="contact" class="content">
+            <h2>Contact</h2>
+            <div class="cont-box">
+            <p>Phone: 123-456-7890</p>
+            <p>Email: info@example.com</p>
+            <p>Address: 123 Example Street, City, Country</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Paimon's Banking Network PVT. LT. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabs = document.querySelectorAll('.tab-link');
+            const sections = document.querySelectorAll('.content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    // Remove active class from all tabs
+                    tabs.forEach(tab => tab.classList.remove('active'));
+
+                    // Add active class to the clicked tab
+                    this.classList.add('active');
+
+                    // Hide all sections
+                    sections.forEach(section => section.classList.remove('active'));
+
+                    // Show the corresponding section
+                    const target = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(target);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

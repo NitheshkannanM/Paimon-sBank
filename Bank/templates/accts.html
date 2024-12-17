@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Website Design</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="page-title">Welcome to Paimon's Bank</h1>
+            <h6 style="font-family: cursive;">.....When wealth comes Knockin'.....</h6>
+            <nav>
+                <ul class="tabs">
+                    <li><a href="#posters" class="tab-link">Home</a></li>
+                    <li><a href="#withdraw" class="tab-link">Withdraw</a></li>
+                    <li><a href="#dep" class="tab-link">Deposit</a></li>
+                    <li><a href="#his" class="tab-link">History</a></li>
+                    <li><a href="#about" class="tab-link">About Us</a></li>
+                    <li><a href="#contact" class="tab-link">Contact</a></li>
+                    <li><a href="#logout" class="tab-link" >logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="posters" class="content active">
+            <h1>welcome {{nom}}  {{thro}}!!!!</h1>
+            <div class="posters">
+                
+                <div class="poster"><img src="{% static 'images/add12.jpg' %}" alt="poster6"></div>
+                <div class="poster"><img src="{% static 'images/add11.jpg' %}" alt="poster5"></div>
+                <div class="poster"><img src="{% static 'images/add7.jpg' %}" alt="poster4"></div>
+            </div>
+        </section>
+
+        <section id="withdraw" class="content">
+            <form class="withdraw" action="{% url 'withdrw' thro %}" method="post">
+                <h2>Withdrawal</h2>
+                {% csrf_token %}
+                {{thro}}
+                <label for="amount">Enter the Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+                <button type="submit">Enter</button>
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <h1>Last Transaction:</h1>
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </section>
+        <section id="dep" class="content">
+            <form class="Deposit" action="{% url 'deps' thro %}" method="post">
+                <h2>Deposit</h2>
+                {% csrf_token %}
+                <label for="amount">Enter the Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+                <button type="submit">Enter</button>
+            </form>
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </section>
+        <section id="his" class="content">
+            <form class="Historys"action="{% url 'deps' thro %}">
+                <h2>Account Details</h2>
+                <p>User ID: {{ thro }}</p>
+                <p>User Name: {{ nom }}</p>
+                <p>{{ uid }}</p>
+                <p>Current Balance: ₹{{ balance }}</p>
+                
+                <h3>Transaction History</h3>
+                <ul>
+                    {% if history_list %}
+                        {% for history in history_list %}
+                            <li>{{ history }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <p>No transaction history available.</p>
+                    {% endif %}
+                </ul>                
+        </form>
+        </section>        
+        <section id="about" class="content">
+            <h2>About Us</h2>
+            <p>We are a fictional bank providing banking services for educational purposes.</p>
+        </section>
+
+        <section id="contact" class="content">
+            <h2>Contact</h2>
+            <p>For any inquiries, please email us at: info@paimonsbank.com</p>
+        </section>
+
+        <section id="logout" class="content">
+            
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <h1>Are u sure ???</h1>
+                <button type="submit">Logout</button>
+            </form>
+        </section>
+        
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Paimon's Banking Network PVT. LT. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabs = document.querySelectorAll('.tab-link');
+            const sections = document.querySelectorAll('.content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    // Remove active class from all tabs
+                    tabs.forEach(tab => tab.classList.remove('active'));
+
+                    // Add active class to the clicked tab
+                    this.classList.add('active');
+
+                    // Hide all sections
+                    sections.forEach(section => section.classList.remove('active'));
+
+                    // Show the corresponding section
+                    const target = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(target);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
